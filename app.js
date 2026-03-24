@@ -38,6 +38,28 @@ class Bd {
         localStorage.setItem(id, JSON.stringify(d))
         localStorage.setItem('id', id)
     }
+    recuperarTodosRegistros(){
+
+        // Array de despesas
+        let despesas = Array()
+
+        let id = localStorage.getItem('id')
+        // Recuperar todas as despesas cadastradas em localStorage
+        for (let i = 1; i <= id; i++ ){
+           
+            //recuperara a despesa
+            let despesa = JSON.parse(localStorage.getItem(i))
+
+            //existe a possibilidade de haver índices que foram pulados/removidos
+            // nesse caso nós vamos pular esses índices
+            if(despesa === null) {
+                continue
+            }
+            
+            despesas.push(despesa)
+        }
+        return despesas
+    }
 }
 let bd = new Bd()
 
@@ -88,4 +110,48 @@ function cadastrarDespesa() {
     }
 }
 
+function carregaListaDespesas(){
+    let despesas = Array()
 
+    despesas = bd.recuperarTodosRegistros()
+    // Selecionando o elemento tbody da tabela
+    let listaDespesas = document.getElementById('listaDespesas')
+
+    // <tr>
+    //     <td>15/03/2018</td>
+    //     <td>Lazer</td>
+    //     <td>Diamante Free fire</td>
+    //     <td>20.00</td>
+    // </tr>
+
+    // Percorrer o array despesas, listando cada despesa de forma dinâmica
+    despesas.forEach(function(d) {
+
+        console.log(d)
+        
+        // criando a lista (tr)
+        let linha = listaDespesas.insertRow()
+
+        // Criar as colunas (td)
+        linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`   
+        
+        // Ajustar o tipo
+        switch(parseInt(d.tipo)){
+            case 1: d.tipo = 'Alimentação' 
+                break
+            case 2: d.tipo = 'Educação' 
+                break
+            case 3: d.tipo = 'Lazer' 
+                break
+            case 4: d.tipo = 'Saúde' 
+                break
+            case 5: d.tipo = 'Transporte' 
+                break
+        }
+
+        linha.insertCell(1).innerHTML = d.tipo
+        linha.insertCell(2).innerHTML = d.descricao
+        linha.insertCell(3).innerHTML = d.valor
+    })
+
+}       
