@@ -59,17 +59,30 @@ function cadastrarDespesa() {
     )
     // Controle de validação
     if(despesa.validarDados()){
+        
         bd.gravar(despesa)
+
+        document.getElementById('modal_titulo_div').className = 'modal-header text-success'
+        document.getElementById('modal_titulo').innerHTML = 'Registro realizado com sucesso'
+        document.getElementById('modal_texto').innerHTML = 'A despesa foi cadastrada.'
+        document.getElementById('modal_btn').className = 'btn btn-success'
+        
         // dialogo de sucesso
         var modalSucesso = new bootstrap.Modal(
-            document.getElementById('sucessoGravacao')
+            document.getElementById('modalRegistraDespesa')
         );
         modalSucesso.show()   
 
     } else {
+       
+        document.getElementById('modal_titulo_div').className = 'modal-header text-danger'
+        document.getElementById('modal_titulo').innerHTML = 'Não foi possível salvar'
+        document.getElementById('modal_texto').innerHTML = 'Preencha todos os campos obrigatórios.'
+        document.getElementById('modal_btn').className = 'btn btn-danger'
+        
         //dialog de erro
         var modalErro = new bootstrap.Modal(
-            document.getElementById('erroGravacao')
+            document.getElementById('modalRegistraDespesa')
         )
         modalErro.show()
     }
